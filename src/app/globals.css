@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --backdrop-color: rgb(224, 233, 244);
+    --bg-color-1: #fff;
+    --bg-color-2: #DADEEC;
+    --bg-color-3: #B0BBD5;
+    --bg-color-4: #EEF0F6;
+    --bg-color-5: #fde68a;
+    --title-color-1: #1B254B; /*navy-700*/
+    --title-color-2: #111c44; /*navy-800*/
+    --text-color-1: #2D396B; /*gray-800*/
+    --text-color-2: #8994b5;
+    --text-color-3: #707eae; /*gray-700*/
+    --text-color-4: #422AFB; /*brand 500*/
+    --text-color-5: #78350f; /*amber 900*/
+    --placeholer-color: #B0BBD5;
+    --border-color-1: #9ba5d0;
+    --border-color-2: #4f46e5;
+    --border-color-3: #A3AED0;
+    --border-color-4: #cdd5f1;
+    --gradient-text-from: #F8DE22;
+    --gradient-text-to: #F94C10;
+    --primary-color: #F4F7FE;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+
+    }
+}
+
+.dark {
+    --backdrop-color: #070f2e;
+    --bg-color-1: #111c44;
+    --bg-color-2: #1B254B;
+    --bg-color-3: #0b1437;
+    --bg-color-4: #0b1437;
+    --bg-color-5: #122476;
+    --title-color-1: #FFF;
+    --title-color-2: #FFF;
+    --text-color-1: #FFF;
+    --text-color-2: #8994b5;
+    --text-color-3: #FFF;
+    --text-color-4: #FFF;
+    --text-color-5: #FFF;
+    --placeholer-color: #fff;
+    --gradient-text-from: #c5ffeb;
+    --gradient-text-to: #9fdfea;
+    --border-color-1: #C9D0E3;
+    --border-color-2: #F5F6FA;
+    --border-color-3: #c7d1f1;
+    --border-color-4: #4d6199;
+    --primary-color: #1B254B;
+}
