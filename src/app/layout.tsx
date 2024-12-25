@@ -1,45 +1,28 @@
-import type {Metadata} from 'next'
-import {Inter} from 'next/font/google'
-import './globals.css'
-import React from "react";
-import {AuthProvider} from "@/hook/AuthContext";
-import {ThemeContext} from "@/hook/ThemeContext";
-import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from "react-toastify";
+import * as React from 'react';
+import type { Viewport } from 'next';
 
-const inter = Inter({subsets: ['latin']})
+import '@/styles/global.css';
 
-export const metadata: Metadata = {
-  title: 'Magic Post',
-  description: 'Magic Post app',
+import { UserProvider } from '@/contexts/user-context';
+import { LocalizationProvider } from '@/components/core/localization-provider';
+import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
+
+export const viewport = { width: 'device-width', initialScale: 1 } satisfies Viewport;
+
+interface LayoutProps {
+  children: React.ReactNode;
 }
 
-export default function RootLayout({
-                                     children,
-                                   }: {
-  children: React.ReactNode
-}) {
+export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
-    <html lang="en" suppressHydrationWarning>
-
-    <body className={`bg-backDropColor ${inter.className}`} suppressHydrationWarning={true}>
-      <ThemeContext>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
-      </ThemeContext>
-      <ToastContainer position="top-right"
-                      autoClose={5000}
-                      hideProgressBar={false}
-                      newestOnTop={false}
-                      closeOnClick
-                      rtl={false}
-                      pauseOnFocusLoss
-                      draggable
-                      pauseOnHover
-      />
-    </body>
-
+    <html lang="en">
+      <body>
+        <LocalizationProvider>
+          <UserProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </UserProvider>
+        </LocalizationProvider>
+      </body>
     </html>
-  )
+  );
 }
