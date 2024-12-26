@@ -9,12 +9,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 const user = {
-  name: 'Sofia Rivers',
-  avatar: '/assets/avatar.png',
-  jobTitle: 'Senior Developer',
-  country: 'USA',
-  city: 'Los Angeles',
-  timezone: 'GTM-7',
+  name: 'HoangP',
+  avatar: '/assets/user.png',
+  email: 'hoangp@gmail.com',
+  balance: '3000$'
 } as const;
 
 export function AccountInfo(): React.JSX.Element {
@@ -28,10 +26,10 @@ export function AccountInfo(): React.JSX.Element {
           <Stack spacing={1} sx={{ textAlign: 'center' }}>
             <Typography variant="h5">{user.name}</Typography>
             <Typography color="text.secondary" variant="body2">
-              {user.city} {user.country}
+              {user.email}
             </Typography>
             <Typography color="text.secondary" variant="body2">
-              {user.timezone}
+              {user.balance}
             </Typography>
           </Stack>
         </Stack>

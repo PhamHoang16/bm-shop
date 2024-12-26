@@ -1,9 +1,8 @@
 {
-  "name": "material-kit-react",
-  "version": "4.0.0",
-  "author": "Devias",
+  "name": "bm-shop",
+  "version": "1.0.0",
+  "author": "Hoang",
   "licence": "MIT",
-  "homepage": "https://devias.io",
   "private": false,
   "scripts": {
     "dev": "next dev",
