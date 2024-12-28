@@ -9,12 +9,12 @@ import { Product } from '@/types/product';
 import { CardHeader, Divider } from '@mui/material';
 
 export interface CategorySectionProps {
-  title: string;
+  name: string;
   products: Product[];
 }
 
 export function CategorySection({
-  title,
+  name,
   products,
 }: CategorySectionProps): React.JSX.Element {
   return (
@@ -34,7 +34,7 @@ export function CategorySection({
             textAlign: 'center',
           }}
         >
-          {title}
+          {name}
         </Typography>
 
         <Box sx={{ marginY: 2 }} />

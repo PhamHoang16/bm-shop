@@ -32,7 +32,7 @@ export interface Customer {
   createdAt: Date;
 }
 
-interface CustomersTableProps {
+interface CustomTableProps {
   count?: number;
   page?: number;
   rows?: Customer[];
@@ -44,7 +44,7 @@ export function CustomersTable({
   rows = [],
   page = 0,
   rowsPerPage = 0,
-}: CustomersTableProps): React.JSX.Element {
+}: CustomTableProps): React.JSX.Element {
   const rowIds = React.useMemo(() => {
     return rows.map((customer) => customer.id);
   }, [rows]);

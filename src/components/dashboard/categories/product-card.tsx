@@ -48,7 +48,7 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
           fontWeight="bold"
           textAlign="center"
         >
-          » {price}₫
+          » {price}
         </Typography>
 
         <Typography
@@ -61,12 +61,12 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
         </Typography>
 
         <Divider sx={{ my: 2 }} />
-        {description && description.map((desc, index) => (
+        {description?.map((desc, index) => (
           <Typography
             key={index}
             variant="body2"
             color="textSecondary"
-            sx={{ marginTop: index === 0 ? 0 : 1 }} 
+            sx={{ marginTop: index === 0 ? 0 : 1 }}
           >
             ✔ {desc}
           </Typography>
