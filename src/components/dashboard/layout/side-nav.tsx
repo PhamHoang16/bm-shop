@@ -22,9 +22,7 @@ export function SideNav(): React.JSX.Element {
   return (
     <Box
       sx={{
-        '--SideNav-background': 'var(--mui-palette-neutral-950)',
-        '--SideNav-color': 'var(--mui-palette-common-white)',
-        '--NavItem-color': 'var(--mui-palette-neutral-300)',
+
         '--NavItem-hover-background': 'rgba(255, 255, 255, 0.04)',
         '--NavItem-active-background': 'var(--mui-palette-primary-main)',
         '--NavItem-active-color': 'var(--mui-palette-primary-contrastText)',
@@ -51,6 +49,14 @@ export function SideNav(): React.JSX.Element {
         <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
           <Logo color="light" height={32} width={122} />
         </Box>
+        <Typography
+          variant="body1"
+          color="black"
+          fontWeight="bold"
+          textAlign="center"
+        >
+          BM Shop
+        </Typography>
 
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
