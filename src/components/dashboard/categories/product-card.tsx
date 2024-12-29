@@ -7,19 +7,25 @@ import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Product } from '@/types/product';
+import { useRouter } from 'next/navigation';
 
 export interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
-  const { name, price, quantity, description } = product;
+  const {id, name, price, quantity, description } = product;
+  const router = useRouter();
+
+  const handleEditClick = () => {
+    router.push(`/product/${id}`);
+  };
 
   return (
     <Card
       sx={{
         width: 250, // Đảm bảo chiều rộng cố định
-        height: 400, // Đảm bảo chiều cao cố định
+        height: 500, // Đảm bảo chiều cao cố định
         display: 'flex',
         flexDirection: 'column', // Sắp xếp theo cột
         justifyContent: 'space-between', // Tạo khoảng cách đều giữa các phần
@@ -75,6 +81,9 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
 
       {/* Nút mua hàng */}
       <CardActions sx={{ justifyContent: 'center', paddingBottom: 2 }}>
+        <Button variant="outlined" color="secondary" size="large" onClick={handleEditClick}>
+          Chỉnh sửa
+        </Button>
         <Button variant="contained" color="primary" size="large">
           Mua hàng
         </Button>

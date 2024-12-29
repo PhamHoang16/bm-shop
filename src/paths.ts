@@ -10,7 +10,8 @@ export const paths = {
     settings: '/dashboard/settings',
     purchase_history: '/dashboard/purchase-history',
     check_live: '/dashboard/check-live',
-    add_product: '/dashboard/add-product',
+    add_product: '/product/add',
   },
+  product: (productId: string) => `/product/${productId}`,
   errors: { notFound: '/errors/not-found' },
 } as const;
