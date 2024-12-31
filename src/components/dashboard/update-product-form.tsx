@@ -161,7 +161,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps): React.JS
                     value={productData.price}
                     label="Giá"
                     name="price"
-                    onChange={(e) => setProductData({ ...productData, price: e.target.value || null})}
+                    onChange={(e) => setProductData({ ...productData, price: e.target.value || ''})}
                   />
                 </FormControl>
               </Grid>
@@ -200,7 +200,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps): React.JS
                   minRows={10}
                   maxRows={50}
                   value={productData.items}
-                  onChange={(e) => setProductData({ ...productData, items: e.target.value || null })}
+                  onChange={(e) => setProductData({ ...productData, items: e.target.value || '' })}
                   variant="outlined"
                   fullWidth
                   sx={{ '& .MuiInputBase-input': { fontSize: '0.8rem' } }} // Reduce font size

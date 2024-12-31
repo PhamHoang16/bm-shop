@@ -26,6 +26,28 @@ const user = {
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
+  const [user, setUser] = React.useState<{ id: string, name: string, avatar: string, email: string, balance: string } | null>(null);
+
+  React.useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/users/6773e35596509e3d37d60d55`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  if (!user) {
+    return <Typography variant="h6">Loading...</Typography>;
+  }
 
   return (
     <Box
@@ -78,7 +100,7 @@ export function SideNav(): React.JSX.Element {
             {user.email}
           </Typography>
           <Typography color="text.secondary" variant="body2">
-            {user.balance}
+            {user.balance + ' đ'}
           </Typography>
         </Stack>
       </Stack>

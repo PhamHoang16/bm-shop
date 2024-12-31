@@ -6,9 +6,10 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { UpdateProductForm } from '@/components/dashboard/update-product-form';
+import {Product} from "@/types/product";
 
 export default function Page({ params }: { params: { productId: string } }): React.JSX.Element {
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,12 +37,16 @@ export default function Page({ params }: { params: { productId: string } }): Rea
     return <CircularProgress />;
   }
 
+  if (!product) {
+    return <Typography variant="h6">Product not found</Typography>;
+  }
+
   return (
     <Stack spacing={3}>
       <div>
         <Typography variant="h4">{product.name}</Typography>
       </div>
-      {product && <UpdateProductForm product={product} />}
+      <UpdateProductForm product={product} />
     </Stack>
   );
 }

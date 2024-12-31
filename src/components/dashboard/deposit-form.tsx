@@ -9,25 +9,56 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
-const user = {
-  name: 'HoangP',
-  avatar: '/assets/user.png',
-  email: 'hoangp@gmail.com',
-  balance: '3000$'
-} as const;
+import { toast } from "react-toastify";
 
 export function DepositForm(): React.JSX.Element {
+  const [user, setUser] = React.useState<{ id: string, name: string, avatar: string, email: string, balance: string } | null>(null);
   const [amount, setAmount] = React.useState('');
 
-  const handleDeposit = () => {
-    if (Number(amount) > 0) {
-      alert(`Nạp thành công ${amount}$ vào tài khoản!`);
-      setAmount(''); // Reset form
-    } else {
-      alert('Vui lòng nhập số tiền hợp lệ.');
+  React.useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/users/6773e35596509e3d37d60d55`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8080/users/deposit?userId=${user?.id}&amount=${Number(amount)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update product');
+      }
+
+      toast.success('Cập nhật sản phẩm thành công!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating product:', error);
+      toast.error('Failed to update product');
     }
   };
+
+  if (!user) {
+    return <Typography variant="h6">Loading...</Typography>;
+  }
 
   return (
     <Card>
@@ -57,7 +88,7 @@ export function DepositForm(): React.JSX.Element {
       </CardContent>
       <Divider />
       <CardActions>
-        <Button fullWidth variant="contained" onClick={handleDeposit}>
+        <Button fullWidth variant="contained" onClick={handleSubmit}>
           Nạp tiền
         </Button>
       </CardActions>
