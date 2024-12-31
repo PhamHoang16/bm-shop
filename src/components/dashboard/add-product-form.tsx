@@ -71,9 +71,9 @@ export function AddProductForm(): React.JSX.Element {
           categoryId: productData.categoryId,
           categoryName: productData.categoryName,
           name: productData.name,
-          description: productData.description,
+          description: productData.description || null,
           price: productData.price,
-          items: productData.items.split('\n'),
+          items: productData.items ? productData.items.split('\n') : null,
         }),
       });
       if (!response.ok) {
@@ -151,7 +151,7 @@ export function AddProductForm(): React.JSX.Element {
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
-              <FormControl fullWidth required>
+              <FormControl fullWidth>
                 <InputLabel>Số lượng</InputLabel>
                 <OutlinedInput
                   value={productData.quantity}

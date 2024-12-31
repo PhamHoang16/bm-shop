@@ -8,6 +8,8 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Product } from '@/types/product';
 import { useRouter } from 'next/navigation';
+import IconButton from "@mui/material/IconButton";
+import { PencilSimple } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 
 export interface ProductCardProps {
   product: Product;
@@ -80,10 +82,12 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
       </CardContent>
 
       {/* Nút mua hàng */}
-      <CardActions sx={{ justifyContent: 'center', paddingBottom: 2 }}>
-        <Button variant="outlined" color="secondary" size="large" onClick={handleEditClick}>
-          Chỉnh sửa
-        </Button>
+      <CardActions sx={{flexDirection: 'column', alignItems: 'center', paddingBottom: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 40, height: 40, border: '1px solid #ccc', borderRadius: '50%', marginBottom: 2}}>
+          <IconButton color="secondary" onClick={handleEditClick}>
+            <PencilSimple size={20} />
+          </IconButton>
+        </Box>
         <Button variant="contained" color="primary" size="large">
           Mua hàng
         </Button>

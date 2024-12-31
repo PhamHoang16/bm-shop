@@ -15,6 +15,14 @@ import { Logo } from '@/components/core/logo';
 
 import { navItems } from './config';
 import { navIcons } from './nav-icons';
+import Avatar from "@mui/material/Avatar";
+
+const user = {
+  name: 'HoangP',
+  avatar: '/assets/user.png',
+  email: 'hoangp@gmail.com',
+  balance: '3000$'
+} as const;
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
@@ -46,9 +54,9 @@ export function SideNav(): React.JSX.Element {
       }}
     >
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
-          <Logo color="light" height={32} width={122} />
-        </Box>
+        {/*<Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>*/}
+        {/*  <Logo color="light" height={32} width={122} />*/}
+        {/*</Box>*/}
         <Typography
           variant="body1"
           color="black"
@@ -58,6 +66,21 @@ export function SideNav(): React.JSX.Element {
           BM Shop
         </Typography>
 
+      </Stack>
+      <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
+      <Stack spacing={2} sx={{ alignItems: 'center', paddingY: 2}}>
+        <div>
+          <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
+        </div>
+        <Stack spacing={1} sx={{ textAlign: 'center' }}>
+          <Typography variant="h5">{user.name}</Typography>
+          <Typography color="text.secondary" variant="body2">
+            {user.email}
+          </Typography>
+          <Typography color="text.secondary" variant="body2">
+            {user.balance}
+          </Typography>
+        </Stack>
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Box component="nav" sx={{ flex: '1 1 auto', p: '12px' }}>

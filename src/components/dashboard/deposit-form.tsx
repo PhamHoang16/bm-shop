@@ -1,0 +1,66 @@
+"use client"
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
+const user = {
+  name: 'HoangP',
+  avatar: '/assets/user.png',
+  email: 'hoangp@gmail.com',
+  balance: '3000$'
+} as const;
+
+export function DepositForm(): React.JSX.Element {
+  const [amount, setAmount] = React.useState('');
+
+  const handleDeposit = () => {
+    if (Number(amount) > 0) {
+      alert(`Nạp thành công ${amount}$ vào tài khoản!`);
+      setAmount(''); // Reset form
+    } else {
+      alert('Vui lòng nhập số tiền hợp lệ.');
+    }
+  };
+
+  return (
+    <Card>
+      <CardContent>
+        <Stack spacing={2} sx={{ alignItems: 'center' }}>
+          <div>
+            <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
+          </div>
+          <Stack spacing={1} sx={{ textAlign: 'center' }}>
+            <Typography variant="h5">{user.name}</Typography>
+            <Typography color="text.secondary" variant="body2">
+              {user.email}
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
+              Số dư hiện tại: {user.balance}
+            </Typography>
+          </Stack>
+          <TextField
+            fullWidth
+            label="Nhập số tiền muốn nạp"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            variant="outlined"
+          />
+        </Stack>
+      </CardContent>
+      <Divider />
+      <CardActions>
+        <Button fullWidth variant="contained" onClick={handleDeposit}>
+          Nạp tiền
+        </Button>
+      </CardActions>
+    </Card>
+  );
+}
