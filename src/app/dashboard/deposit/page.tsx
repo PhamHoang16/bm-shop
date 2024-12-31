@@ -15,14 +15,11 @@ export default function Page(): React.JSX.Element {
   return (
     <Stack spacing={3}>
       <div>
-        <Typography variant="h4">Account</Typography>
+        <Typography variant="h4">Nạp tiền</Typography>
       </div>
       <Grid container spacing={3}>
-        <Grid lg={4} md={6} xs={12}>
-          <DepositForm />
-        </Grid>
         <Grid lg={8} md={6} xs={12}>
-          <AccountDetailsForm />
+            <DepositForm />
         </Grid>
       </Grid>
     </Stack>

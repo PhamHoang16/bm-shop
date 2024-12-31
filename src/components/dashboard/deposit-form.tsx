@@ -9,7 +9,8 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function DepositForm(): React.JSX.Element {
   const [user, setUser] = React.useState<{ id: string, name: string, avatar: string, email: string, balance: string } | null>(null);
@@ -24,6 +25,7 @@ export function DepositForm(): React.JSX.Element {
         }
         const data = await response.json();
         setUser(data);
+
       } catch (error) {
         console.error('Error fetching user:', error);
       }
@@ -45,7 +47,7 @@ export function DepositForm(): React.JSX.Element {
         throw new Error('Failed to update product');
       }
 
-      toast.success('Cập nhật sản phẩm thành công!', {
+      toast.success('Nạp tiền thành công!', {
         position: 'top-right',
         autoClose: 3000,
       });
@@ -61,37 +63,40 @@ export function DepositForm(): React.JSX.Element {
   }
 
   return (
-    <Card>
-      <CardContent>
-        <Stack spacing={2} sx={{ alignItems: 'center' }}>
-          <div>
-            <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
-          </div>
-          <Stack spacing={1} sx={{ textAlign: 'center' }}>
-            <Typography variant="h5">{user.name}</Typography>
-            <Typography color="text.secondary" variant="body2">
-              {user.email}
-            </Typography>
-            <Typography color="text.secondary" variant="body2">
-              Số dư hiện tại: {user.balance}
-            </Typography>
+    <>
+      <ToastContainer />
+      <Card>
+        <CardContent>
+          <Stack spacing={2} sx={{ alignItems: 'center' }}>
+            <div>
+              <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
+            </div>
+            <Stack spacing={1} sx={{ textAlign: 'center' }}>
+              <Typography variant="h5">{user.name}</Typography>
+              <Typography color="text.secondary" variant="body2">
+                {user.email}
+              </Typography>
+              <Typography color="text.secondary" variant="body2">
+                Số dư hiện tại: {user.balance}
+              </Typography>
+            </Stack>
+            <TextField
+              fullWidth
+              label="Nhập số tiền muốn nạp"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              variant="outlined"
+            />
           </Stack>
-          <TextField
-            fullWidth
-            label="Nhập số tiền muốn nạp"
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            variant="outlined"
-          />
-        </Stack>
-      </CardContent>
-      <Divider />
-      <CardActions>
-        <Button fullWidth variant="contained" onClick={handleSubmit}>
-          Nạp tiền
-        </Button>
-      </CardActions>
-    </Card>
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <Button fullWidth variant="contained" onClick={handleSubmit}>
+            Nạp tiền
+          </Button>
+        </CardActions>
+      </Card>
+    </>
   );
 }
