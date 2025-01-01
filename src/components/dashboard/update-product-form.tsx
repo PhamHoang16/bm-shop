@@ -79,7 +79,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps): React.JS
           categoryName: productData.categoryName,
           name: productData.name,
           description: productData.description,
-          quantity: productData.quantity,
+          quantity: product.items ? product.items.length : 0,
           price: productData.price,
           items: productData.items.split('\n'),
         }),
