@@ -19,7 +19,7 @@ import Avatar from "@mui/material/Avatar";
 
 const user = {
   name: 'HoangP',
-  avatar: '/assets/user.png',
+  avatar: '/assets/user.jpg',
   email: 'hoangp@gmail.com',
   balance: '3000$'
 } as const;
@@ -90,7 +90,7 @@ export function SideNav(): React.JSX.Element {
 
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
-      <Stack spacing={2} sx={{ alignItems: 'center', paddingY: 2}}>
+      <Stack spacing={2} sx={{ alignItems: 'center', paddingY: 2 }}>
         <div>
           <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
         </div>
@@ -142,11 +142,11 @@ function NavItem({ disabled, external, href, icon, matcher, pathname, title }: N
       <Box
         {...(href
           ? {
-              component: external ? 'a' : RouterLink,
-              href,
-              target: external ? '_blank' : undefined,
-              rel: external ? 'noreferrer' : undefined,
-            }
+            component: external ? 'a' : RouterLink,
+            href,
+            target: external ? '_blank' : undefined,
+            rel: external ? 'noreferrer' : undefined,
+          }
           : { role: 'button' })}
         sx={{
           alignItems: 'center',
