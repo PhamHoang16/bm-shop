@@ -29,15 +29,16 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
   const [responseItems, setResponseItems] = useState<string[]>([]);
   const [responseDialogOpen, setResponseDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const handleEditClick = async () => {
-    setLoading(true); // Bắt đầu loading
+    setLoading(true);
     try {
       await router.push(`/product/${id}`);
     } catch (error) {
       console.error('Lỗi khi chuyển hướng:', error);
     } finally {
-      setLoading(false); // Dừng loading sau khi push hoàn tất
+      setLoading(false);
     }
   };
 
@@ -48,6 +49,7 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
   const handleClose = () => {
     setOpen(false);
     setResponseItems([]);
+    setErrorMessage(null);
   };
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
 
   const handleConfirmPurchase = async () => {
     try {
-      const userId = '6773e35596509e3d37d60d55'; // Thay thế bằng userId thực tế
+      const userId = '6773e35596509e3d37d60d55';
       const response = await axios.put<string[]>('http://localhost:8080/products/buy', null, {
         params: {
           productId: id,
@@ -65,12 +67,14 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
         },
       });
       setResponseItems(response.data);
-      console.log('Mua hàng thành công:', response.data);
       setOpen(false);
       setResponseDialogOpen(true);
     } catch (error) {
-      console.error('Lỗi khi mua hàng:', error);
-      setResponseItems(['Lỗi khi mua hàng']);
+      if (axios.isAxiosError(error) && error.response) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage('Đã xảy ra lỗi không mong muốn');
+      }
     }
   };
 
@@ -92,17 +96,15 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
     <>
       <Card
         sx={{
-          width: 250, // Đảm bảo chiều rộng cố định
-          height: 500, // Đảm bảo chiều cao cố định
+          height: 500,
           display: 'flex',
-          flexDirection: 'column', // Sắp xếp theo cột
-          justifyContent: 'space-between', // Tạo khoảng cách đều giữa các phần
+          flexDirection: 'column',
+          justifyContent: 'space-between',
           borderRadius: 2,
           boxShadow: 3,
           overflow: 'hidden',
         }}
       >
-        {/* Tiêu đề sản phẩm */}
         <Box sx={{ backgroundColor: '#0096c7', padding: 2 }}>
           <Typography
             variant="body1"
@@ -114,7 +116,6 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
           </Typography>
         </Box>
 
-        {/* Nội dung sản phẩm */}
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography
             variant="h5"
@@ -147,7 +148,6 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
           ))}
         </CardContent>
 
-        {/* Nút mua hàng */}
         <CardActions sx={{ flexDirection: 'column', alignItems: 'center', paddingBottom: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 40, height: 40, border: '1px solid #ccc', borderRadius: '50%', marginBottom: 2 }}>
             <IconButton color="secondary" onClick={handleEditClick}>
@@ -160,7 +160,6 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
         </CardActions>
       </Card>
 
-      {/* Dialog chọn số lượng */}
       <Dialog open={open} onClose={handleClose} sx={{ textAlign: 'center', padding: 10 }}>
         <DialogTitle>Chọn số lượng</DialogTitle>
         <DialogContent>
@@ -174,6 +173,15 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
             onChange={handleQuantityChange}
             inputProps={{ min: 1, max: quantity }}
           />
+          {errorMessage && (
+            <Typography
+              variant="body2"
+              color="error"
+              sx={{ marginTop: 2 }}
+            >
+              {errorMessage}
+            </Typography>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Hủy</Button>
@@ -183,10 +191,9 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
         </DialogActions>
       </Dialog>
 
-      {/* Dialog hiển thị kết quả mua hàng */}
       <Dialog open={responseDialogOpen} onClose={handleCancel} sx={{
         '& .MuiDialog-paper': {
-          width: '1200px', // Chiều rộng tùy chỉnh
+          width: '1200px',
         },
       }}>
         <DialogTitle>Kết quả mua hàng</DialogTitle>

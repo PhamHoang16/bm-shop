@@ -7,6 +7,11 @@ import { CategorySection } from "@/components/dashboard/categories/categories-ca
 import { Category } from "@/types/category";
 import Button from "@mui/material/Button";
 import { Plus as PlusIcon } from "@phosphor-icons/react/dist/ssr/Plus";
+import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
+import {CustomersFilters} from "@/components/dashboard/customer/customers-filters";
+import {CustomersTable} from "@/components/dashboard/customer/customers-table";
+import {DepositForm} from "@/components/dashboard/deposit-form";
 
 export default function Page(): React.JSX.Element {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -55,23 +60,33 @@ export default function Page(): React.JSX.Element {
   }
 
   return (
-    <Container maxWidth="xl">
-      <div>
-        <Button
-          startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-          variant="contained"
-          onClick={handleAddClick}
-        >
-          Add
-        </Button>
-      </div>
-      {categories.map((category, index) => (
-        <CategorySection
-          key={index}
-          name={category.name}
-          products={category.products}
-        />
-      ))}
-    </Container>
+    <Stack spacing={2}>
+      <Container maxWidth="xl">
+        <div>
+          <Button
+            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+            variant="contained"
+            onClick={handleAddClick}
+          >
+            Add
+          </Button>
+        </div>
+        {categories.map((category, index) => (
+          <CategorySection
+            key={index}
+            name={category.name}
+            products={category.products}
+          />
+        ))}
+      </Container>
+      <Grid spacing={3}>
+        <Grid item lg={6} md={6} xs={12}>
+          <DepositForm></DepositForm>
+        </Grid>
+        <Grid item lg={6} md={6} xs={12}>
+          <DepositForm></DepositForm>
+        </Grid>
+      </Grid>
+    </Stack>
   );
 }

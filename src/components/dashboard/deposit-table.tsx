@@ -38,7 +38,7 @@ export function DepositTable({
             {rows.map((row) => {
               return (
                 <TableRow hover key={row.id}>
-                  <TableCell>{dayjs(row.date).format('DD-MM-YYYY')}</TableCell>
+                  <TableCell>{dayjs(row.createdAt).format('HH:mm DD-MM-YYYY')}</TableCell>
                   <TableCell>{row.amount}</TableCell>
                   <TableCell>{row.detail}</TableCell>
                 </TableRow>

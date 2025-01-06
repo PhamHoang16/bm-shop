@@ -1,6 +1,6 @@
 export interface Deposit {
   id: string;
-  date: Date;
+  createdAt: string;
   amount: number;
   detail: string;
 }

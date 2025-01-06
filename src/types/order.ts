@@ -4,5 +4,5 @@ export interface Order {
     number: number;
     items: string[];
     totalPrice: number;
-    date: Date;
+    createdAt: string;
 }

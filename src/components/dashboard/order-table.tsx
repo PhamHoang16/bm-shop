@@ -78,7 +78,7 @@ export function OrderTable({
                   >
                     {row.items.join(', ')}
                   </TableCell>
-                  <TableCell>{dayjs(row.date).format('MMM D, YYYY')}</TableCell>
+                  <TableCell>{dayjs(row.createdAt).format('HH:mm DD-MM-YYYY')}</TableCell>
                 </TableRow>
               );
             })}

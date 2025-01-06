@@ -92,7 +92,7 @@ export function SideNav(): React.JSX.Element {
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Stack spacing={2} sx={{ alignItems: 'center', paddingY: 2 }}>
         <div>
-          <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
+          <Avatar src= "/assets/user.jpg" sx={{ height: '80px', width: '80px' }} />
         </div>
         <Stack spacing={1} sx={{ textAlign: 'center' }}>
           <Typography variant="h5">{user.name}</Typography>

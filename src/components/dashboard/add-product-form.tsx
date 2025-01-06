@@ -74,6 +74,7 @@ export function AddProductForm(): React.JSX.Element {
           description: productData.description || null,
           price: productData.price,
           items: productData.items ? productData.items.split('\n') : null,
+          quantity: productData.items ? productData.items.split('\n').length : 0,
         }),
       });
       if (!response.ok) {
