@@ -9,12 +9,22 @@ import Button from "@mui/material/Button";
 import { Plus as PlusIcon } from "@phosphor-icons/react/dist/ssr/Plus";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import {CustomersFilters} from "@/components/dashboard/customer/customers-filters";
-import {CustomersTable} from "@/components/dashboard/customer/customers-table";
-import {DepositForm} from "@/components/dashboard/deposit-form";
+import Box from "@mui/material/Box";
+import {MainList} from "@/components/dashboard/main-list";
+import {Order} from "@/types/order";
+import {Deposit} from "@/types/deposit";
+import axios from "axios";
+
+export interface ListMainItem {
+  username: string;
+  detail: string;
+  time: string;
+}
 
 export default function Page(): React.JSX.Element {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [lastOrder, setLastOrder] = useState<ListMainItem[]>([]);
+  const [lastDeposit, setLastDeposit] = useState<ListMainItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter(); // Sử dụng useRouter từ next/navigation
 
@@ -48,7 +58,26 @@ export default function Page(): React.JSX.Element {
       }
     };
 
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/products/orders/last-orders");
+        setLastOrder(response.data); // Assuming the response data matches the expected order format
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    const fetchDeposit = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/users/deposit/last-deposit");
+        setLastDeposit(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
     fetchCategories();
+    fetchOrders();
+    fetchDeposit()
   }, []);
 
   const handleAddClick = () => {
@@ -59,9 +88,9 @@ export default function Page(): React.JSX.Element {
     return <CircularProgress />;
   }
 
+  // @ts-ignore
   return (
     <Stack spacing={2}>
-      <Container maxWidth="xl">
         <div>
           <Button
             startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
@@ -78,15 +107,20 @@ export default function Page(): React.JSX.Element {
             products={category.products}
           />
         ))}
-      </Container>
-      <Grid spacing={3}>
-        <Grid item lg={6} md={6} xs={12}>
-          <DepositForm></DepositForm>
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={6} >
+              <Box>
+                <MainList title={"Lịch sử mua hàng"} rows={lastOrder}>
+                </MainList>
+              </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+              <Box>
+                <MainList title={"Lịch sử nạp tiền"} rows={lastDeposit}>
+                </MainList>
+              </Box>
+          </Grid>
         </Grid>
-        <Grid item lg={6} md={6} xs={12}>
-          <DepositForm></DepositForm>
-        </Grid>
-      </Grid>
     </Stack>
   );
 }

@@ -18,7 +18,7 @@ export function CategorySection({
   products,
 }: CategorySectionProps): React.JSX.Element {
   return (
-    <Card sx={{ marginY: 4, boxShadow: 3 }}>
+    <Card sx={{ marginY: 2, boxShadow: 3 }}>
       <CardContent>
         {/* Tiêu đề danh mục */}
         <Typography
