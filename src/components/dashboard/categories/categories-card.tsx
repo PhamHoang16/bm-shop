@@ -42,7 +42,7 @@ export function CategorySection({
         {/* Danh sách sản phẩm */}
         <Grid container spacing={3}>
           {products.map((product, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
+            <Grid item xs={12} sm={6} md={4} xl={2.4} key={index}>
               <ProductCard product={product} />
             </Grid>
           ))}

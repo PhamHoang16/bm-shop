@@ -96,13 +96,18 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
     <>
       <Card
         sx={{
-          height: 500,
+          height: 550,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           borderRadius: 2,
           boxShadow: 3,
           overflow: 'hidden',
+          transition: 'transform 0.3s, box-shadow 0.3s',
+          '&:hover': {
+            transform: 'scale(1.03)',
+            boxShadow: 100,
+          },
         }}
       >
         <Box sx={{ backgroundColor: '#0096c7', padding: 2 }}>
@@ -111,6 +116,7 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
             color="white"
             fontWeight="bold"
             textAlign="center"
+            sx={{ lineHeight: '1.5em', height: '4em' }}
           >
             {name}
           </Typography>

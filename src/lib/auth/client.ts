@@ -1,6 +1,7 @@
 'use client';
 
 import type { User } from '@/types/user';
+import axios from "axios";
 
 function generateToken(): string {
   const arr = new Uint8Array(12);
@@ -17,10 +18,10 @@ const user = {
 } satisfies User;
 
 export interface SignUpParams {
-  firstName: string;
-  lastName: string;
-  email: string;
+  name: string;
+  username: string;
   password: string;
+  email: string;
 }
 
 export interface SignInWithOAuthParams {
@@ -37,14 +38,15 @@ export interface ResetPasswordParams {
 }
 
 class AuthClient {
-  async signUp(_: SignUpParams): Promise<{ error?: string }> {
-    // Make API request
-
-    // We do not handle the API, so we'll just generate a token and store it in localStorage.
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
+  async signUp(params: SignUpParams): Promise<{ error?: string }> {
+    try {
+      const response = await axios.post('http://localhost:8080/users/sign-up', params);
+      const token = generateToken();
+      return {};
+    } catch (error) {
+      // @ts-ignore
+      return { error: error.response?.data?.message || 'An error occurred during sign-up' };
+    }
   }
 
   async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
@@ -53,18 +55,18 @@ class AuthClient {
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { email, password } = params;
-
-    // Make API request
-
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'hoangp@gmail.com' || password !== '123456') {
-      return { error: 'Invalid credentials' };
+    try {
+      const response = await axios.post('http://localhost:8080/users/sign-in', null, {
+        params: { email, password }
+      });
+      const token = generateToken();
+      sessionStorage.setItem('custom-auth-token', token);
+      sessionStorage.setItem('username', email);
+      return {};
+    } catch (error) {
+      // @ts-ignore
+      return { error: error.response?.data?.message || 'An error occurred during sign-in' };
     }
-
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
   }
 
   async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
@@ -79,7 +81,7 @@ class AuthClient {
     // Make API request
 
     // We do not handle the API, so just check if we have a token in localStorage.
-    const token = localStorage.getItem('custom-auth-token');
+    const token = sessionStorage.getItem('custom-auth-token');
 
     if (!token) {
       return { data: null };
@@ -89,7 +91,7 @@ class AuthClient {
   }
 
   async signOut(): Promise<{ error?: string }> {
-    localStorage.removeItem('custom-auth-token');
+    sessionStorage.removeItem('custom-auth-token');
 
     return {};
   }

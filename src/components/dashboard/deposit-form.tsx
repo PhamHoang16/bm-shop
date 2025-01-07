@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
 export function DepositForm(): React.JSX.Element {
   const [user, setUser] = React.useState<{ id: string, name: string, avatar: string, email: string, balance: string } | null>(null);
@@ -19,7 +20,7 @@ export function DepositForm(): React.JSX.Element {
   React.useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/users/6773e35596509e3d37d60d55`);
+        const response = await fetch(`  http://localhost:8080/users/6773e35596509e3d37d60d55`);
         if (!response.ok) {
           throw new Error('Failed to fetch user');
         }
@@ -36,15 +37,22 @@ export function DepositForm(): React.JSX.Element {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const username = sessionStorage.getItem('username');
+    if (!username) {
+      toast.error('Username not found in session storage');
+      return;
+    }
+
     try {
-      const response = await fetch(`http://localhost:8080/users/deposit?userId=${user?.id}&amount=${Number(amount)}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.put('http://localhost:8080/users/deposit', null, {
+        params: {
+          username,
+          amount: Number(amount),
         },
       });
-      if (!response.ok) {
-        throw new Error('Failed to update product');
+
+      if (response.status !== 200) {
+        throw new Error('Failed to deposit');
       }
 
       toast.success('Nạp tiền thành công!', {
@@ -53,8 +61,8 @@ export function DepositForm(): React.JSX.Element {
       });
       window.location.reload();
     } catch (error) {
-      console.error('Error updating product:', error);
-      toast.error('Failed to update product');
+      console.error('Error depositing money:', error);
+      toast.error('Failed to deposit money');
     }
   };
 

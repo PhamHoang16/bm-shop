@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ListMainItem } from '@/app/dashboard/page';
 import { CircularProgress, Container, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -101,13 +100,6 @@ export default function Page(): React.JSX.Element {
     <Stack spacing={2}>
       <Card>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
-          <Button
-            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-            variant="contained"
-            onClick={handleAddClick}
-          >
-            Add
-          </Button>
           <FormControl sx={{ minWidth: 350 }}>
             <InputLabel id="category-select-label">Danh mục</InputLabel>
             <Select
@@ -126,6 +118,13 @@ export default function Page(): React.JSX.Element {
               ))}
             </Select>
           </FormControl>
+          <Button
+            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+            variant="contained"
+            onClick={handleAddClick}
+          >
+            Add
+          </Button>
         </Box>
       </Card>
       {filteredCategories.map((category, index) => (
