@@ -34,10 +34,16 @@ export function SideNav(): React.JSX.Element {
     fetchUser();
   }, []);
 
+  const filteredNavItems = React.useMemo(() => {
+    if (user?.username !== 'hoangp1') {
+      return navItems.filter(item => item.key !== 'customers');
+    }
+    return navItems;
+  }, [user]);
+
   return (
     <Box
       sx={{
-
         '--NavItem-hover-background': 'rgba(255, 255, 255, 0.04)',
         '--NavItem-active-background': 'var(--mui-palette-primary-main)',
         '--NavItem-active-color': 'var(--mui-palette-primary-contrastText)',
@@ -61,9 +67,6 @@ export function SideNav(): React.JSX.Element {
       }}
     >
       <Stack spacing={2} sx={{ p: 3 }}>
-        {/*<Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>*/}
-        {/*  <Logo color="light" height={32} width={122} />*/}
-        {/*</Box>*/}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Typography
             variant="body1"
@@ -74,17 +77,16 @@ export function SideNav(): React.JSX.Element {
             BM Shop
           </Typography>
         </Box>
-
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Stack spacing={2} sx={{ alignItems: 'center', paddingY: 2 }}>
         <div>
           <Avatar src="/assets/user.jpg" sx={{ height: '80px', width: '80px' }} />
         </div>
-        <Stack spacing={1} sx={{ textAlign: 'center' }}>
+        <Stack spacing={1} sx={{ textAlign: 'center', width: '100%' }}>
           <Typography variant="h5">{user?.name}</Typography>
           <Typography color="text.secondary" variant="body2">
-            {user?.email}
+            {user?.username}
           </Typography>
           <Box sx={{
             bgcolor: '#0466c8',
@@ -101,7 +103,7 @@ export function SideNav(): React.JSX.Element {
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Box component="nav" sx={{ flex: '1 1 auto', p: '12px' }}>
-        {renderNavItems({ pathname, items: navItems })}
+        {renderNavItems({ pathname, items: filteredNavItems })}
       </Box>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
     </Box>

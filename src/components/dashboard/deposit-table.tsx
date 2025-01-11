@@ -10,15 +10,16 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import dayjs from 'dayjs';
-import {Deposit} from "@/types/deposit";
+import { Deposit } from "@/types/deposit";
+import { formatCurrency } from '@/lib/currency';
 
 interface CustomTableProps {
   rows?: Deposit[];
 }
 
 export function DepositTable({
-                              rows = []
-                            }: CustomTableProps): React.JSX.Element {
+  rows = []
+}: CustomTableProps): React.JSX.Element {
   const rowIds = React.useMemo(() => {
     return rows.map((deposit) => deposit.id);
   }, [rows]);
@@ -39,7 +40,7 @@ export function DepositTable({
               return (
                 <TableRow hover key={row.id}>
                   <TableCell>{dayjs(row.createdAt).format('HH:mm DD-MM-YYYY')}</TableCell>
-                  <TableCell>{row.amount}</TableCell>
+                  <TableCell>{row.amount ? formatCurrency(row.amount) : '0đ'}</TableCell>
                   <TableCell>{row.detail}</TableCell>
                 </TableRow>
               );

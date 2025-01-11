@@ -1,12 +1,9 @@
 'use client';  // Ensure this is a client-side component
 
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,14 +13,15 @@ import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 import { Order } from '@/types/order';
+import { formatCurrency } from '@/lib/currency';
 
 interface CustomTableProps {
   rows?: Order[];
 }
 
 export function OrderTable({
-                              rows = []
-                            }: CustomTableProps): React.JSX.Element {
+  rows = []
+}: CustomTableProps): React.JSX.Element {
   const rowIds = React.useMemo(() => {
     return rows.map((order) => order.id);
   }, [rows]);
@@ -58,7 +56,7 @@ export function OrderTable({
               return (
                 <TableRow hover key={row.id}>
                   <TableCell>{row.productName}</TableCell>
-                  <TableCell>{row.totalPrice}</TableCell>
+                  <TableCell>{row.totalPrice ? formatCurrency(row.totalPrice) : '0đ'}</TableCell>
                   <TableCell>
                     {row.items.length}
                   </TableCell>

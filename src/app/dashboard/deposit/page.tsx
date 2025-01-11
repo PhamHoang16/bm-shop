@@ -17,9 +17,6 @@ export default function Page(): React.JSX.Element {
     <Stack spacing={3}>
       <Typography variant="h4">Nạp tiền</Typography>
       <Grid container spacing={3}>
-        <Grid lg={5} md={5} xs={12}>
-          <DepositForm />
-        </Grid>
         <Grid lg={7} md={7} xs={12}>
           <BankingInfo />
         </Grid>

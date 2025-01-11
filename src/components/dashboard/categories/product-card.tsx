@@ -18,6 +18,7 @@ import { useUser } from '@/hooks/use-user';
 import { Product } from '@/types/product';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart } from '@phosphor-icons/react';
+import { Alert, FormHelperText } from '@mui/material';
 
 export interface ProductCardProps {
   product: Product;
@@ -170,7 +171,11 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
         </CardActions>
       </Card>
 
-      <Dialog open={open} onClose={handleClose} sx={{ textAlign: 'center', padding: 10 }}>
+      <Dialog open={open} onClose={handleClose} sx={{
+        '& .MuiDialog-paper': {
+          width: '800px',
+        },
+      }}>
         <DialogTitle>Chọn số lượng</DialogTitle>
         <DialogContent>
           <TextField
@@ -184,13 +189,11 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
             inputProps={{ min: 1, max: quantity }}
           />
           {errorMessage && (
-            <Typography
-              variant="body2"
-              color="error"
-              sx={{ marginTop: 2 }}
-            >
-              {errorMessage}
-            </Typography>
+            <Alert color="error">
+              <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
+                {errorMessage}
+              </Typography>
+            </Alert>
           )}
         </DialogContent>
         <DialogActions>
@@ -206,7 +209,11 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
           width: '1200px',
         },
       }}>
-        <DialogTitle>Kết quả mua hàng</DialogTitle>
+        <DialogTitle><Alert color="success">
+          <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
+            Mua hàng thành công
+          </Typography>
+        </Alert></DialogTitle>
         <DialogContent>
           {responseItems.length > 0 && (
             <Box sx={{ marginTop: 2 }}>
@@ -220,10 +227,10 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCopyToClipboard} variant="contained" color="primary">Sao chép</Button>
           <Button onClick={handleCancel}>
             Đóng
           </Button>
+          <Button onClick={handleCopyToClipboard} variant="contained" color="primary">Sao chép</Button>
         </DialogActions>
       </Dialog>
     </>
