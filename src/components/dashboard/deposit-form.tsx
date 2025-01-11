@@ -1,4 +1,5 @@
-"use client"
+'use client';
+
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -9,24 +10,28 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
+
+import axios from 'axios';
+
+import { User } from '@/types/user';
+import { authClient } from '@/lib/auth/client';
+import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
 
 export function DepositForm(): React.JSX.Element {
-  const [user, setUser] = React.useState<{ id: string, name: string, avatar: string, email: string, balance: string } | null>(null);
+  const [user, setUser] = React.useState<User | null>(null);
   const [amount, setAmount] = React.useState('');
 
   React.useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`  http://localhost:8080/users/6773e35596509e3d37d60d55`);
-        if (!response.ok) {
+        const response = await authClient.getUser();
+        if (!response.data) {
           throw new Error('Failed to fetch user');
         }
-        const data = await response.json();
-        setUser(data);
-
+        setUser(response.data);
       } catch (error) {
         console.error('Error fetching user:', error);
       }
@@ -71,40 +76,37 @@ export function DepositForm(): React.JSX.Element {
   }
 
   return (
-    <>
-      <ToastContainer />
-      <Card>
-        <CardContent>
-          <Stack spacing={2} sx={{ alignItems: 'center' }}>
-            <div>
-              <Avatar src={user.avatar} sx={{ height: '80px', width: '80px' }} />
-            </div>
-            <Stack spacing={1} sx={{ textAlign: 'center' }}>
-              <Typography variant="h5">{user.name}</Typography>
-              <Typography color="text.secondary" variant="body2">
-                {user.email}
-              </Typography>
-              <Typography color="text.secondary" variant="body2">
-                Số dư hiện tại: {user.balance}
-              </Typography>
-            </Stack>
-            <TextField
-              fullWidth
-              label="Nhập số tiền muốn nạp"
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              variant="outlined"
-            />
+    <Card>
+      <CardContent>
+        <Stack spacing={2} sx={{ alignItems: 'center' }}>
+          <div>
+            <Avatar src="/assets/user.jpg" sx={{ height: '80px', width: '80px' }} />
+          </div>
+          <Stack spacing={1} sx={{ textAlign: 'center' }}>
+            <Typography variant="h5">{user.name}</Typography>
+            <Typography color="text.secondary" variant="body2">
+              {user.email}
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
+              Số dư hiện tại: {user.balance}
+            </Typography>
           </Stack>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button fullWidth variant="contained" onClick={handleSubmit}>
-            Nạp tiền
-          </Button>
-        </CardActions>
-      </Card>
-    </>
+          <TextField
+            fullWidth
+            label="Nhập số tiền muốn nạp"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            variant="outlined"
+          />
+        </Stack>
+      </CardContent>
+      <Divider />
+      <CardActions>
+        <Button fullWidth variant="contained" onClick={handleSubmit}>
+          Nạp tiền
+        </Button>
+      </CardActions>
+    </Card>
   );
 }

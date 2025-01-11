@@ -9,45 +9,31 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import type { NavItemConfig } from '@/types/nav';
-import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
-import { Logo } from '@/components/core/logo';
 
 import { navItems } from './config';
 import { navIcons } from './nav-icons';
 import Avatar from "@mui/material/Avatar";
-
-const user = {
-  name: 'HoangP',
-  avatar: '/assets/user.jpg',
-  email: 'hoangp@gmail.com',
-  balance: '3000$'
-} as const;
+import {authClient} from "@/lib/auth/client";
+import {User} from "@/types/user";
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
-  const [user, setUser] = React.useState<{ id: string, name: string, avatar: string, email: string, balance: string } | null>(null);
+  const [user, setUser] = React.useState<User | null>(null);
 
   React.useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/users/6773e35596509e3d37d60d55`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch user');
-        }
-        const data = await response.json();
-        setUser(data);
-      } catch (error) {
+      const { data, error } = await authClient.getUser();
+      if (error) {
         console.error('Error fetching user:', error);
+        return;
+      }
+      if (data) {
+        setUser(data);
       }
     };
-
     fetchUser();
   }, []);
-
-  if (!user) {
-    return <Typography variant="h6">Loading...</Typography>;
-  }
 
   return (
     <Box
@@ -95,12 +81,12 @@ export function SideNav(): React.JSX.Element {
           <Avatar src= "/assets/user.jpg" sx={{ height: '80px', width: '80px' }} />
         </div>
         <Stack spacing={1} sx={{ textAlign: 'center' }}>
-          <Typography variant="h5">{user.name}</Typography>
+          <Typography variant="h5">{user?.name}</Typography>
           <Typography color="text.secondary" variant="body2">
-            {user.email}
+            {user?.email}
           </Typography>
           <Typography color="text.secondary" variant="body2">
-            {user.balance + ' đ'}
+            {user?.balance + ' đ'}
           </Typography>
         </Stack>
       </Stack>

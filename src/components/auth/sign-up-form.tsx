@@ -77,11 +77,11 @@ export function SignUpForm(): React.JSX.Element {
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography variant="h4">Sign up</Typography>
+        <Typography variant="h4">Đăng ký</Typography>
         <Typography color="text.secondary" variant="body2">
-          Already have an account?{' '}
+          Bạn đã có tài khoản?{' '}
           <Link component={RouterLink} href={paths.auth.signIn} underline="hover" variant="subtitle2">
-            Sign in
+            Đăng nhập
           </Link>
         </Typography>
       </Stack>

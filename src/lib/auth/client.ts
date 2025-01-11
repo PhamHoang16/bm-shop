@@ -9,14 +9,6 @@ function generateToken(): string {
   return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
 }
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Hoang',
-  lastName: 'Pham',
-  email: 'hoangp@gmail.com',
-} satisfies User;
-
 export interface SignUpParams {
   name: string;
   username: string;
@@ -24,12 +16,8 @@ export interface SignUpParams {
   email: string;
 }
 
-export interface SignInWithOAuthParams {
-  provider: 'google' | 'discord';
-}
-
 export interface SignInWithPasswordParams {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -49,28 +37,33 @@ class AuthClient {
     }
   }
 
-  async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
-    return { error: 'Social authentication not implemented' };
-  }
-
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
-    const { email, password } = params;
+    const { username, password } = params;
     try {
       const response = await axios.post('http://localhost:8080/users/sign-in', null, {
-        params: { email, password }
+        params: { username, password }
       });
       const token = generateToken();
       sessionStorage.setItem('custom-auth-token', token);
-      sessionStorage.setItem('username', email);
+      sessionStorage.setItem('username', username);
       return {};
     } catch (error) {
       // @ts-ignore
-      return { error: error.response?.data?.message || 'An error occurred during sign-in' };
+      return { error: error.response?.data?.message || 'Có lỗi trong quá trình đăng nhập' };
     }
   }
 
-  async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Password reset not implemented' };
+  async resetPassword(param: ResetPasswordParams): Promise<{ error?: string }> {
+    const { email } = param;
+    try {
+      const response = await axios.post('http://localhost:8080/users/reset-password', null, {
+        params: { email }
+      });
+      return {};
+    } catch (e) {
+      return { error: 'Có lỗi trong quá trình đặt lại mật khẩu' };
+    }
+
   }
 
   async updatePassword(_: ResetPasswordParams): Promise<{ error?: string }> {
@@ -82,16 +75,23 @@ class AuthClient {
 
     // We do not handle the API, so just check if we have a token in localStorage.
     const token = sessionStorage.getItem('custom-auth-token');
-
-    if (!token) {
+    const username = sessionStorage.getItem('username');
+    if (!username) {
       return { data: null };
     }
 
-    return { data: user };
+    try {
+      const response = await axios.get(`http://localhost:8080/users/${username}`);
+      return { data: response.data };
+    } catch (error) {
+      // @ts-ignore
+      return { error: error.response?.data?.message || 'Có lỗi xảy ra' };
+    }
   }
 
   async signOut(): Promise<{ error?: string }> {
     sessionStorage.removeItem('custom-auth-token');
+    sessionStorage.removeItem('username');
 
     return {};
   }

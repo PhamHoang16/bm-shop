@@ -3,7 +3,7 @@ export interface User {
   name?: string;
   username?: string;
   email?: string;
-  role?: string;
+  balance?: number;
 
   [key: string]: unknown;
 }

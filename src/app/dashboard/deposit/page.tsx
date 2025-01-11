@@ -14,11 +14,9 @@ export const metadata = { title: `Account | Dashboard | ${config.site.name}` } s
 export default function Page(): React.JSX.Element {
   return (
     <Stack spacing={3}>
-      <div>
-        <Typography variant="h4">Nạp tiền</Typography>
-      </div>
+      <Typography variant="h4">Nạp tiền</Typography>
       <Grid container spacing={3}>
-        <Grid lg={8} md={6} xs={12}>
+        <Grid lg={5} md={5} xs={12}>
             <DepositForm />
         </Grid>
       </Grid>

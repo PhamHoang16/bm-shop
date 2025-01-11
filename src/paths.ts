@@ -8,7 +8,7 @@ export const paths = {
     deposit: '/dashboard/deposit',
     deposit_history: '/dashboard/deposit-history',
     settings: '/dashboard/settings',
-    purchase_history: '/dashboard/purchase-history',
+    order_history: '/dashboard/order',
     check_live: '/dashboard/check-live',
     add_product: '/product/add',
   },
