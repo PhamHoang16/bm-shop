@@ -11,11 +11,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
-import { Product } from '@/types/product';
-import { useRouter } from 'next/navigation';
-import IconButton from "@mui/material/IconButton";
+import IconButton from '@mui/material/IconButton';
 import { PencilSimple } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 import axios from 'axios';
+import { useUser } from '@/hooks/use-user';
+import { Product } from '@/types/product';
+import { useRouter } from 'next/navigation';
+import { ShoppingCart } from '@phosphor-icons/react';
 
 export interface ProductCardProps {
   product: Product;
@@ -24,6 +26,7 @@ export interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
   const { id, name, price, quantity, description } = product;
   const router = useRouter();
+  const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [responseItems, setResponseItems] = useState<string[]>([]);
@@ -58,11 +61,10 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
 
   const handleConfirmPurchase = async () => {
     try {
-      const userId = '6773e35596509e3d37d60d55';
       const response = await axios.put<string[]>('http://localhost:8080/products/buy', null, {
         params: {
           productId: id,
-          userId: userId,
+          userId: user?.id,
           number: selectedQuantity,
         },
       });
@@ -110,9 +112,9 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
           },
         }}
       >
-        <Box sx={{ backgroundColor: '#0096c7', padding: 2 }}>
+        <Box sx={{ backgroundColor: '#00b4d8', padding: 2 }}>
           <Typography
-            variant="body1"
+            variant="body2"
             color="white"
             fontWeight="bold"
             textAlign="center"
@@ -155,12 +157,14 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
         </CardContent>
 
         <CardActions sx={{ flexDirection: 'column', alignItems: 'center', paddingBottom: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 40, height: 40, border: '1px solid #ccc', borderRadius: '50%', marginBottom: 2 }}>
-            <IconButton color="secondary" onClick={handleEditClick}>
-              <PencilSimple size={20} />
-            </IconButton>
-          </Box>
-          <Button variant="contained" color="primary" size="large" onClick={handleBuyClick}>
+          {user?.username === 'hoangp1' && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: 40, height: 40, border: '1px solid #ccc', borderRadius: '50%', marginBottom: 2 }}>
+              <IconButton color="secondary" onClick={handleEditClick}>
+                <PencilSimple size={20} />
+              </IconButton>
+            </Box>
+          )}
+          <Button variant="contained" color="primary" size="large" onClick={handleBuyClick} startIcon={<ShoppingCart />}>
             Mua hàng
           </Button>
         </CardActions>

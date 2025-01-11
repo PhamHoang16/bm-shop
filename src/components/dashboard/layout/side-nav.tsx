@@ -7,15 +7,14 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-
 import type { NavItemConfig } from '@/types/nav';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
-
 import { navItems } from './config';
 import { navIcons } from './nav-icons';
 import Avatar from "@mui/material/Avatar";
-import {authClient} from "@/lib/auth/client";
-import {User} from "@/types/user";
+import { authClient } from "@/lib/auth/client";
+import { User } from "@/types/user";
+import { formatCurrency } from '../../../lib/currency';
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
@@ -43,7 +42,7 @@ export function SideNav(): React.JSX.Element {
         '--NavItem-active-background': 'var(--mui-palette-primary-main)',
         '--NavItem-active-color': 'var(--mui-palette-primary-contrastText)',
         '--NavItem-disabled-color': 'var(--mui-palette-neutral-500)',
-        '--NavItem-icon-color': 'var(--mui-palette-neutral-400)',
+        '--NavItem-icon-color': '#00b4d8',
         '--NavItem-icon-active-color': 'var(--mui-palette-primary-contrastText)',
         '--NavItem-icon-disabled-color': 'var(--mui-palette-neutral-600)',
         bgcolor: 'var(--SideNav-background)',
@@ -65,29 +64,39 @@ export function SideNav(): React.JSX.Element {
         {/*<Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>*/}
         {/*  <Logo color="light" height={32} width={122} />*/}
         {/*</Box>*/}
-        <Typography
-          variant="body1"
-          color="black"
-          fontWeight="bold"
-          textAlign="center"
-        >
-          BM Shop
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Typography
+            variant="body1"
+            color="black"
+            fontWeight="bold"
+            textAlign="center"
+          >
+            BM Shop
+          </Typography>
+        </Box>
 
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Stack spacing={2} sx={{ alignItems: 'center', paddingY: 2 }}>
         <div>
-          <Avatar src= "/assets/user.jpg" sx={{ height: '80px', width: '80px' }} />
+          <Avatar src="/assets/user.jpg" sx={{ height: '80px', width: '80px' }} />
         </div>
         <Stack spacing={1} sx={{ textAlign: 'center' }}>
           <Typography variant="h5">{user?.name}</Typography>
           <Typography color="text.secondary" variant="body2">
             {user?.email}
           </Typography>
-          <Typography color="text.secondary" variant="body2">
-            {user?.balance + ' đ'}
-          </Typography>
+          <Box sx={{
+            bgcolor: '#0466c8',
+            padding: '5px',
+            borderRadius: '25px',
+            width: '80%',
+            margin: 'auto'
+          }}>
+            <Typography color="var(--NavItem-active-color)" variant="body2" fontWeight="bold">
+              {'Số dư: ' + (user?.balance ? formatCurrency(user.balance) : '0 đ')}
+            </Typography>
+          </Box>
         </Stack>
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
@@ -146,12 +155,15 @@ function NavItem({ disabled, external, href, icon, matcher, pathname, title }: N
           position: 'relative',
           textDecoration: 'none',
           whiteSpace: 'nowrap',
+          '&:hover': {
+            bgcolor: '#a9def9',
+          },
           ...(disabled && {
             bgcolor: 'var(--NavItem-disabled-background)',
             color: 'var(--NavItem-disabled-color)',
             cursor: 'not-allowed',
           }),
-          ...(active && { bgcolor: 'var(--NavItem-active-background)', color: 'var(--NavItem-active-color)' }),
+          ...(active && { bgcolor: '#48cae4', color: 'var(--NavItem-active-color)' }),
         }}
       >
         <Box sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', flex: '0 0 auto' }}>

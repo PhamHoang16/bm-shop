@@ -36,7 +36,7 @@ export const colorSchemes = {
       neutral: { ...nevada },
       primary: {
         ...neonBlue,
-        light: neonBlue[300],
+        light: '#5fa8d3',
         main: neonBlue[400],
         dark: neonBlue[500],
         contrastText: 'var(--mui-palette-common-black)',
@@ -103,9 +103,9 @@ export const colorSchemes = {
       neutral: { ...stormGrey },
       primary: {
         ...neonBlue,
-        light: neonBlue[400],
-        main: neonBlue[500],
-        dark: neonBlue[600],
+        light: '#0466c8',
+        main: '#0466c8',
+        dark: '#0466c8',
         contrastText: 'var(--mui-palette-common-white)',
       },
       secondary: {

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CircularProgress, Container, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { CircularProgress, Container, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -14,6 +14,7 @@ import axios from 'axios';
 import { Category } from '@/types/category';
 import { CategorySection } from '@/components/dashboard/categories/categories-card';
 import { MainList } from '@/components/dashboard/main-list';
+import { useUser } from '@/hooks/use-user';
 
 export interface ListMainItem {
   username: string;
@@ -28,6 +29,7 @@ export default function Page(): React.JSX.Element {
   const [lastDeposit, setLastDeposit] = useState<ListMainItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -49,7 +51,6 @@ export default function Page(): React.JSX.Element {
             quantity: product.quantity,
           })),
         }));
-
         setCategories(formattedCategories);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -84,7 +85,7 @@ export default function Page(): React.JSX.Element {
     router.push('/product/add');
   };
 
-  const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     setSelectedCategory(event.target.value as string);
   };
 
@@ -118,13 +119,16 @@ export default function Page(): React.JSX.Element {
               ))}
             </Select>
           </FormControl>
-          <Button
-            startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
-            variant="contained"
-            onClick={handleAddClick}
-          >
-            Add
-          </Button>
+          {user?.username === 'hoangp1' && (
+            <Button
+              startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+              variant="contained"
+              onClick={handleAddClick}
+            >
+              Add
+            </Button>
+          )}
+
         </Box>
       </Card>
       {filteredCategories.map((category, index) => (

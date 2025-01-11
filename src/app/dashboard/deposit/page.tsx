@@ -7,7 +7,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { config } from '@/config';
 import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
 import { AccountInfo } from '@/components/dashboard/account/account-info';
-import {DepositForm} from "@/components/dashboard/deposit-form";
+import { DepositForm } from "@/components/dashboard/deposit-form";
+import BankingInfo from '@/components/dashboard/banking-info';
 
 export const metadata = { title: `Account | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -17,7 +18,10 @@ export default function Page(): React.JSX.Element {
       <Typography variant="h4">Nạp tiền</Typography>
       <Grid container spacing={3}>
         <Grid lg={5} md={5} xs={12}>
-            <DepositForm />
+          <DepositForm />
+        </Grid>
+        <Grid lg={7} md={7} xs={12}>
+          <BankingInfo />
         </Grid>
       </Grid>
     </Stack>

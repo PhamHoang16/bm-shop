@@ -22,7 +22,18 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
             <ThemeProvider>{children}</ThemeProvider>
           </UserProvider>
         </LocalizationProvider>
+        <LiveContactButton />
       </body>
     </html>
+  );
+}
+
+function LiveContactButton() {
+  return (
+    <div className="live-contact-button">
+      <a href="https://zalo.me/0834170617" target="_blank" rel="noopener noreferrer">
+        <img src="/assets/zalo.png" alt="Live Contact" />
+      </a>
+    </div>
   );
 }

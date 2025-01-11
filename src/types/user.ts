@@ -4,6 +4,9 @@ export interface User {
   username?: string;
   email?: string;
   balance?: number;
+  totalOrder?: number;
+  createdDate?: string;
 
   [key: string]: unknown;
 }
+  

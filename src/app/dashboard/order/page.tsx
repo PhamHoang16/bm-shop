@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
         if (axios.isAxiosError(error) && error.response) {
           setErrorMessage(error.response.data.message); // Set the error message from the response
         } else {
-          setErrorMessage('An unexpected error occurred');
+          setErrorMessage('Có lỗi xảy ra');
         }
       } finally {
         setLoading(false);

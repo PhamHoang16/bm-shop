@@ -25,7 +25,7 @@ export function CategorySection({
           variant="h6"
           fontWeight="bold"
           sx={{
-            backgroundColor: '#00b4d8',
+            background: 'linear-gradient(134deg, #60efff 0%, #0061ff 100%)',
             color: 'white',
             padding: 2,
             paddingY: 3,
