@@ -2,6 +2,7 @@
 
 import type { User } from '@/types/user';
 import axios from "axios";
+import api from '../api';
 
 function generateToken(): string {
   const arr = new Uint8Array(12);
@@ -28,24 +29,24 @@ export interface ResetPasswordParams {
 class AuthClient {
   async signUp(params: SignUpParams): Promise<{ error?: string }> {
     try {
-      const response = await axios.post('http://localhost:8080/users/sign-up', params);
-      const token = generateToken();
+      const response = await api.post('/users/sign-up', params);
       return {};
     } catch (error) {
       // @ts-ignore
-      return { error: error.response?.data?.message || 'An error occurred during sign-up' };
+      return { error: error.response?.data?.message || 'Có lỗi xảy ra trong quá trình đăng nhập' };
     }
   }
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { username, password } = params;
     try {
-      const response = await axios.post('http://localhost:8080/users/sign-in', null, {
+      const response = await api.post('/users/sign-in', null, {
         params: { username, password }
       });
       const token = generateToken();
       sessionStorage.setItem('custom-auth-token', token);
       sessionStorage.setItem('username', username);
+      sessionStorage.setItem('userId', response.data);
       return {};
     } catch (error) {
       // @ts-ignore
@@ -56,7 +57,7 @@ class AuthClient {
   async resetPassword(param: ResetPasswordParams): Promise<{ error?: string }> {
     const { email } = param;
     try {
-      const response = await axios.post('http://localhost:8080/users/reset-password', null, {
+      const response = await api.post('/users/reset-password', null, {
         params: { email }
       });
       return {};
@@ -66,22 +67,18 @@ class AuthClient {
 
   }
 
-  async updatePassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Update reset not implemented' };
-  }
-
   async getUser(): Promise<{ data?: User | null; error?: string }> {
     // Make API request
 
     // We do not handle the API, so just check if we have a token in localStorage.
     const token = sessionStorage.getItem('custom-auth-token');
-    const username = sessionStorage.getItem('username');
-    if (!username) {
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
       return { data: null };
     }
 
     try {
-      const response = await axios.get(`http://localhost:8080/users/${username}`);
+      const response = await api.get(`/users/${userId}`);
       return { data: response.data };
     } catch (error) {
       // @ts-ignore
@@ -92,6 +89,7 @@ class AuthClient {
   async signOut(): Promise<{ error?: string }> {
     sessionStorage.removeItem('custom-auth-token');
     sessionStorage.removeItem('username');
+    sessionStorage.removeItem('userId');
 
     return {};
   }

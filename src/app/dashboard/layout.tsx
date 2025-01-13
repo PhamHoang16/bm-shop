@@ -7,10 +7,15 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { MainNav } from '@/components/dashboard/layout/main-nav';
 import { SideNav } from '@/components/dashboard/layout/side-nav';
 import { UserProvider } from '@/contexts/user-context';
-import Head from 'next/head';
+import { Metadata } from 'next';
 
 interface LayoutProps {
   children: React.ReactNode;
+}
+
+export const metadata: Metadata = {
+  title: 'BM Shop',
+  description: 'Magic Post app',
 }
 
 export default function Layout({ children }: LayoutProps): React.JSX.Element {

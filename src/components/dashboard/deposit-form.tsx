@@ -10,7 +10,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,27 +18,12 @@ import axios from 'axios';
 
 import { User } from '@/types/user';
 import { authClient } from '@/lib/auth/client';
-import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
+import api from '@/lib/api';
+import {useUser} from "@/hooks/use-user";
 
 export function DepositForm(): React.JSX.Element {
-  const [user, setUser] = React.useState<User | null>(null);
   const [amount, setAmount] = React.useState('');
-
-  React.useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await authClient.getUser();
-        if (!response.data) {
-          throw new Error('Failed to fetch user');
-        }
-        setUser(response.data);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  const {user} = useUser();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -49,9 +34,9 @@ export function DepositForm(): React.JSX.Element {
     }
 
     try {
-      const response = await axios.put('http://localhost:8080/users/deposit', null, {
+      const response = await api.put('/users/deposit', null, {
         params: {
-          username,
+          userId: user?.id,
           amount: Number(amount),
         },
       });

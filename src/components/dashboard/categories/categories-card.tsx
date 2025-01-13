@@ -6,7 +6,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { ProductCard } from './product-card';
 import { Product } from '@/types/product';
-import { CardHeader, Divider } from '@mui/material';
 
 export interface CategorySectionProps {
   name: string;

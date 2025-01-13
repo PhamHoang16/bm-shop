@@ -19,6 +19,7 @@ import { Product } from '@/types/product';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart } from '@phosphor-icons/react';
 import { Alert, FormHelperText } from '@mui/material';
+import api from '@/lib/api';
 
 export interface ProductCardProps {
   product: Product;
@@ -62,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps): React.JSX.Element {
 
   const handleConfirmPurchase = async () => {
     try {
-      const response = await axios.put<string[]>('http://localhost:8080/products/buy', null, {
+      const response = await api.put<string[]>('/products/buy', null, {
         params: {
           productId: id,
           userId: user?.id,

@@ -15,6 +15,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
 import TextField from '@mui/material/TextField';
+import api from '@/lib/api';
+import { toast } from 'react-toastify';
 
 const categories = [
   { value: '6770f5e9c3d9a660954724b1', label: 'VIA: 902, Bất Tử Via - Kháng: BM Page' },
@@ -58,32 +60,38 @@ export function AddProductForm(): React.JSX.Element {
     quantity: '',
     items: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setIsSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:8080/products`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          categoryId: productData.categoryId,
-          categoryName: productData.categoryName,
-          name: productData.name,
-          description: productData.description || null,
-          price: productData.price,
-          items: productData.items ? productData.items.split('\n') : null,
-          quantity: productData.items ? productData.items.split('\n').length : 0,
-        }),
+      const response = await api.post(`/products`, {
+        categoryId: productData.categoryId,
+        categoryName: productData.categoryName,
+        name: productData.name,
+        description: productData.description || null,
+        price: productData.price,
+        items: productData.items ? productData.items.split('\n') : null,
+        quantity: productData.items ? productData.items.split('\n').length : 0,
       });
-      if (!response.ok) {
-        throw new Error('Failed to add product');
+      if (!response) {
+        throw new Error('Lỗi khi thêm sản phẩm');
       }
-      alert('Product added successfully');
+      toast.success('Thêm sản phẩm thành công', {
+        position: 'top-right',
+        autoClose: 3000,
+        onClose: () => {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      console.error('Error adding product:', error);
-      alert('Failed to add product');
+      // @ts-ignore
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      setIsSubmitting(false);
     }
   };
 
@@ -96,7 +104,7 @@ export function AddProductForm(): React.JSX.Element {
           </Grid>
           <Grid>
             <CardActions sx={{ justifyContent: 'flex-end' }}>
-              <Button variant="contained" type="submit">Lưu</Button>
+              <Button variant="contained" type="submit" disabled={isSubmitting}>Lưu</Button>
             </CardActions>
           </Grid>
         </Grid>

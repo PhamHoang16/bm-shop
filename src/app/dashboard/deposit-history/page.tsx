@@ -3,21 +3,24 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import axios from 'axios'; // Import axios for making HTTP requests
-import {DepositTable} from "@/components/dashboard/deposit-table";
-import {Deposit} from "@/types/deposit";
+import { DepositTable } from "@/components/dashboard/deposit-table";
+import { Deposit } from "@/types/deposit";
+import { useUser } from '@/hooks/use-user';
+import api from '@/lib/api';
 
 export default function Page(): React.JSX.Element {
-  const [depositList, setDepositList] = React.useState<Deposit[]>([]); // State to hold the orders
-  const [loading, setLoading] = React.useState<boolean>(false); // State for loading indicator
+  const [depositList, setDepositList] = React.useState<Deposit[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const { user } = useUser();
 
-  // Fetch data when the component mounts
   React.useEffect(() => {
     const fetchOrders = async () => {
+      if (!user) return; // Wait until user is available
+
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8080/users/deposit?userId=6773e35596509e3d37d60d55'); // Replace with actual userId or query parameter
-        setDepositList(response.data); // Assuming the response data matches Order type
+        const response = await api.get(`/users/deposit?userId=${user.id}`);
+        setDepositList(response.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
       } finally {
@@ -26,9 +29,9 @@ export default function Page(): React.JSX.Element {
     };
 
     fetchOrders();
-  }, []);
+  }, [user]); // Re-run the effect when user changes
 
-  if (loading) return <div>Loading...</div>; // Display loading indicator while fetching data
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Stack spacing={3}>

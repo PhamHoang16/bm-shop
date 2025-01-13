@@ -25,6 +25,7 @@ import { User } from '@/types/user';
 import { formatCurrency, formatCurrencyInput } from '@/lib/currency';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import api from '@/lib/api';
 
 interface CustomTableProps {
   rows?: User[];
@@ -67,9 +68,9 @@ export function CustomersTable({
     if (!selectedUser) return;
 
     try {
-      const response = await axios.put('http://localhost:8080/users/deposit', null, {
+      const response = await api.put('/users/deposit', null, {
         params: {
-          username: selectedUser.username,
+          userId: selectedUser.id,
           amount: Number(amount.replace(/[^0-9]/g, '')),
         },
       });

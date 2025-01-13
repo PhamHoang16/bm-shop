@@ -12,12 +12,14 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import {toast} from "react-toastify";
-import axios from "@/lib/axios";
+import api from '@/lib/api';
+import {useUser} from "@/hooks/use-user";
 
 export function UpdatePasswordForm(): React.JSX.Element {
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
+  const {user} = useUser()
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -30,16 +32,8 @@ export function UpdatePasswordForm(): React.JSX.Element {
       return;
     }
 
-    const username = sessionStorage.getItem('username');
-    if (!username) {
-      toast.error('Không tìm thấy tên người dùng', {
-        position: 'top-right',
-        autoClose: 3000,
-      })
-    }
-
     try {
-      const response = await axios.put(`/users/change-password?username=${username}`, {
+      const response = await api.put(`/users/change-password?userId=${user?.id}`, {
         currentPassword,
         newPassword,
       });

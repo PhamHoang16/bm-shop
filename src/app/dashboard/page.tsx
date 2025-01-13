@@ -9,12 +9,12 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-import axios from 'axios';
 
 import { Category } from '@/types/category';
 import { CategorySection } from '@/components/dashboard/categories/categories-card';
 import { MainList } from '@/components/dashboard/main-list';
 import { useUser } from '@/hooks/use-user';
+import api from '@/lib/api';
 
 export interface ListMainItem {
   username: string;
@@ -34,8 +34,8 @@ export default function Page(): React.JSX.Element {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8080/products');
-        const data: any[] = await response.json();
+        const response = await api.get('/products');
+        const data: any[] = response.data;
 
         const formattedCategories: Category[] = data.map((category) => ({
           name: category.name,
@@ -61,7 +61,7 @@ export default function Page(): React.JSX.Element {
 
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/products/orders/last-orders');
+        const response = await api.get('products/orders/last-orders');
         setLastOrder(response.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
@@ -69,7 +69,7 @@ export default function Page(): React.JSX.Element {
     };
     const fetchDeposit = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/users/deposit/last-deposit');
+        const response = await api.get('/users/deposit/last-deposit');
         setLastDeposit(response.data);
       } catch (error) {
         console.error('Error fetching orders:', error);

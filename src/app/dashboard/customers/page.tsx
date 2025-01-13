@@ -1,15 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-import axios from 'axios';
 
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
 import { CustomersTable } from '@/components/dashboard/customer/customers-table';
 import { User } from '@/types/user';
+import api from '@/lib/api';
+import axios from 'axios';
 
 export default function Page(): React.JSX.Element {
   const [userList, setUserList] = React.useState<User[]>([]);
@@ -22,7 +21,7 @@ export default function Page(): React.JSX.Element {
       setLoading(true);
       setErrorMessage(null);
       try {
-        const response = await axios.get('http://localhost:8080/users');
+        const response = await api.get('/users');
         setUserList(response.data);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

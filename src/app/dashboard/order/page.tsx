@@ -5,26 +5,28 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from 'axios'; 
 import { Order } from '@/types/order';
-import {OrderTable} from "@/components/dashboard/order-table";
+import { OrderTable } from "@/components/dashboard/order-table";
+import { useUser } from '@/hooks/use-user';
+import api from '@/lib/api';
 
 export default function Page(): React.JSX.Element {
-  const [orderList, setOrderList] = React.useState<Order[]>([]); // State to hold the orders
-  const [loading, setLoading] = React.useState<boolean>(false); // State for loading indicator
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null); // State for error message
+  const [orderList, setOrderList] = React.useState<Order[]>([]); 
+  const [loading, setLoading] = React.useState<boolean>(false); 
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const { user } = useUser();
 
-  // Fetch data when the component mounts
   React.useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
-      setErrorMessage(null); // Reset error message before fetching
+      setErrorMessage(null);
       try {
-        const response = await axios.get('http://localhost:8080/products/order?userId=6773e35596509e3d37d60d55');
+        const response = await api.get(`/products/order?userId=${user?.id}`);
         setOrderList(response.data);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-          setErrorMessage(error.response.data.message); // Set the error message from the response
+          setErrorMessage(error.response.data.message);
         } else {
           setErrorMessage('Có lỗi xảy ra');
         }

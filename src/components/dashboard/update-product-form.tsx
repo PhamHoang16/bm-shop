@@ -18,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import { Product } from '@/types/product';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '@/lib/api';
 
 const categories = [
   { value: '6770f5e9c3d9a660954724b1', label: 'VIA: 902, Bất Tử Via - Kháng: BM Page' },
@@ -69,33 +70,32 @@ export function UpdateProductForm({ product }: UpdateProductFormProps): React.JS
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8080/products/${product.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          categoryId: productData.categoryId,
-          categoryName: productData.categoryName,
-          name: productData.name,
-          description: productData.description,
-          quantity: product.items ? product.items.length : 0,
-          price: productData.price,
-          items: productData.items.split('\n'),
-        }),
+      const response = await api.put(`/products/${product.id}`, {
+        categoryId: productData.categoryId,
+        categoryName: productData.categoryName,
+        name: productData.name,
+        description: productData.description,
+        quantity: product.items ? product.items.length : 0,
+        price: productData.price,
+        items: productData.items.split('\n'),
       });
-      if (!response.ok) {
+      if (!response) {
         throw new Error('Failed to update product');
       }
 
       toast.success('Cập nhật sản phẩm thành công!', {
         position: 'top-right',
         autoClose: 3000,
+        onClose: () => {
+          window.location.reload();
+        }
       });
-      window.location.reload();
     } catch (error) {
-      console.error('Error updating product:', error);
-      toast.error('Failed to update product');
+      // @ts-ignore
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
   };
 
@@ -161,7 +161,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps): React.JS
                     value={productData.price}
                     label="Giá"
                     name="price"
-                    onChange={(e) => setProductData({ ...productData, price: e.target.value || ''})}
+                    onChange={(e) => setProductData({ ...productData, price: e.target.value || '' })}
                   />
                 </FormControl>
               </Grid>

@@ -6,7 +6,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { UpdateProductForm } from '@/components/dashboard/update-product-form';
-import {Product} from "@/types/product";
+import { Product } from "@/types/product";
+import api from '@/lib/api';
 
 export default function Page({ params }: { params: { productId: string } }): React.JSX.Element {
   const [product, setProduct] = useState<Product | null>(null);
@@ -16,12 +17,11 @@ export default function Page({ params }: { params: { productId: string } }): Rea
     console.log('Params:', params);
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/products/${params.productId}`);
-        if (!response.ok) {
+        const response = await api.get(`/products/${params.productId}`);
+        if (!response) {
           notFound(); // Gọi notFound() nếu sản phẩm không tồn tại.
         }
-        const data = await response.json();
-        setProduct(data);
+        setProduct(response.data);
       } catch (error) {
         console.error('Error fetching product:', error);
         notFound();

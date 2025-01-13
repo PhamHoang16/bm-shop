@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-import axios from 'axios';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -15,6 +14,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Unstable_Grid2';
 import { User } from '@/types/user';
 import { toast } from 'react-toastify';
+import api from '@/lib/api';
 
 export interface UserInfoProps {
   userInfo: User;
@@ -41,12 +41,11 @@ export function AccountDetailsForm({ userInfo }: UserInfoProps): React.JSX.Eleme
     setIsSubmitting(true);
 
     try {
-      const response = await axios.put(`http://localhost:8080/users/${userInfo.username}`, {
+      const response = await api.put(`/users/${userInfo.id}`, {
         name,
         email,
       });
 
-      // Update user info with the new data
       const updatedUser = response.data;
       setName(updatedUser.name);
       setEmail(updatedUser.email);
@@ -55,7 +54,7 @@ export function AccountDetailsForm({ userInfo }: UserInfoProps): React.JSX.Eleme
         position: 'top-right',
         autoClose: 3000,
         onClose: () => {
-          window.location.reload(); // Reload trang khi toast đóng
+          window.location.reload();
         },
       });
     } catch (error) {
